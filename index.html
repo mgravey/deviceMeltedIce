@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>How much sea ice melt due to your electrical usage</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="script.js"></script>
+</head>
+<body style='background-color: rgb(170,68,0)'>
+
+	<br>
+	<label>You are using </label>
+	<select id="device">
+		<option value=60 selected>an incandescent light bulb (60 W)</option>
+		<option value=7 >a LED bulb (7 W - Equivalent to 60 W)</option>
+		<option value=500 >a washing machine (500 W)</option>
+		<option value=1000 >a dryer (1000 W)</option>
+		<option value=65 >an air cooler (65 W)</option>
+
+		<option value=2150 >an oven (2150 kW)</option>
+		<option value=600 >a microwave (600 W)</option>
+		<option value=100 >a fridge (100 W)</option>
+		<option value=1200 >a dishwasher (1200 kW)</option>
+
+		<option value=200 >a large LED TV (200 W)</option>
+		<option value=75 >a laptop (75 W)</option>
+		<option value=200 >a desktop computer (200 W)</option>
+		<option value=2500 >a cluster node with 8 GPUs to forecast sea ice melt (2500 kW)</option>
+
+		<option value=-1>A device using...</option>
+	</select> 
+
+	<span id="customDevice" style="display: none;">
+		<input id='customDevice-input' name="'customDevice-input" value=2500 type="number">
+		<label> Watts</label>
+	</span>
+
+
+	<br>
+	<label>during </label>
+	<input id='duration' name="duration" value=1 type="number">
+	<label> hours</label>
+
+
+	
+	<label>in </label>
+	<select id="country">
+		<option value=91>Austria</option>
+		<option value=167>Belgium</option>
+		<option value=421>Bulgaria</option>
+		<option value=145>Croatia</option>
+		<option value=651>Cyprus</option>
+		<option value=431>Czechia</option>
+		<option value=126>Denmark</option>
+		<option value=86>Finland</option>
+		<option value=52>France</option>
+		<option value=338>Germany</option>
+		<option value=598>Greece</option>
+		<option value=212>Hungary</option>
+		<option value=316>Ireland</option>
+		<option value=233>Italy</option>
+		<option value=117>Latvia</option>
+		<option value=22>Lithuania</option>
+		<option value=74>Luxembourg</option>
+		<option value=357>Malta</option>
+		<option value=390>Netherlands</option>
+		<option value=19>Norway</option>
+		<option value=719>Poland</option>
+		<option value=244>Portugal</option>
+		<option value=293>Romania</option>
+		<option value=231>Slovenia</option>
+		<option value=207>Spain</option>
+		<option value=8>Sweden</option>
+		<option value=228>United Kingdom</option>
+		<option value=417 selected>United States of America</option>
+	  </select>
+
+	  <p id="result"></p>
+
+
+	  <img style='    max-height: calc( 100vh - 135px); bottom: 0; position: fixed;' src="sad-penguin.svg">
+</body>
+</html>
+
+
+
