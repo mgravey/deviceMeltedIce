@@ -4,7 +4,7 @@ function runComputation(){
 	if(conso==-1){
 		conso=$('#customDevice-input').val();
 	}
-	poll=conso*$('#duration').val()*$('#country').val();
+	poll=conso*$('#duration').val()/1000*$('#country').val();
 	//1g => 3mm^2
 	lostSurfaceInmm2=poll*3;
 	surf=Math.round(lostSurfaceInmm2*100)/100+' mm&#178';
