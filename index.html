@@ -36,23 +36,25 @@
 						<option value=200>a desktop computer (200 W)</option>
 						<option value=2500>a cluster node with 8 GPUs to forecast sea ice melt (2500 kW)</option>
 	
-						<option value=-1>A device using...</option>
+						<option value=-1>a device using...</option>
 					</select>
 				</div>
 				
 
-				<!--<span id="customDevice" style="display: none;">
-					<input id='customDevice-input' name="'customDevice-input" value=2500 type="number"
-						class="form-select">
-					<label> Watts</label>
-				</span>-->
+				<span id="customDevice" style="display: none;">
+					<div class="input-group">
+						<input id='customDevice-input' name="'customDevice-input" value=2500 type="number"
+						class="form-control">
+						<div class="input-group-text">Watts</div>
+					</div>
+				</span>
 
 				<label>during </label>
 				<div class="col-12">
 					<div class="input-group">
 						<input id='duration' name="duration" value=1 type="number" class="form-control">
 						<div class="input-group-text">hours</div>
-					  </div>
+					</div>
 			</div>
 			
 				<label>in </label>
@@ -96,7 +98,7 @@
 		</div>
 		</div>
 	</div>
-	
+	<img id='pinguing' class="animate__animated" src="sad-penguin.svg">
 	</div>
 	<!--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
 		integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous">

@@ -19,7 +19,7 @@ function runComputation(){
 	CO2e/kWh data from <a href="https://www.eia.gov/tools/faqs/faq.php?id=74&t=11"">EIA</a> and 
 	<a href="https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6#tab-googlechartid_googlechartid_googlechartid_googlechartid_chart_11111">EEA</a>.</p>`)
 	$('#pinguing').addClass('animate__fadeInUp');
-	jQuery('body').css({"background-image": "url('sad-penguin.svg')"});  
+	//jQuery('body').css({"background-image": "url('sad-penguin.svg')"});  
 }
 
 $(window).on('load', function(){
