@@ -1,86 +1,111 @@
 <!DOCTYPE html>
-<html>
+<html class="h-100">
+
 <head>
 	<title>How much sea ice melt due to your electrical usage</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+	<link rel="stylesheet" href="./style.css" />
+</head>
+
+<body class="h-100">
+	<div class="container is-fluid" id="main">
+		<div class="row">
+		<div class="col-md-6 col-sm-12 mt-4 mx-auto">
+			<form class="px-3 pb-4 text-dark border rounded row row-cols-lg-auto g-3 align-items-center">
+				<h4 >How much sea ice melt due to your electrical usage?</h4>
+
+				<label>You are using </label>
+				<div class="col-12">
+					<select id="device" class="form-select">
+						<option value=60 selected>an incandescent light bulb (60 W)</option>
+						<option value=7>a LED bulb (7 W - Equivalent to 60 W)</option>
+						<option value=500>a washing machine (500 W)</option>
+						<option value=1000>a dryer (1000 W)</option>
+						<option value=65>an air cooler (65 W)</option>
+	
+						<option value=2150>an oven (2150 kW)</option>
+						<option value=600>a microwave (600 W)</option>
+						<option value=100>a fridge (100 W)</option>
+						<option value=1200>a dishwasher (1200 kW)</option>
+	
+						<option value=200>a large LED TV (200 W)</option>
+						<option value=75>a laptop (75 W)</option>
+						<option value=200>a desktop computer (200 W)</option>
+						<option value=2500>a cluster node with 8 GPUs to forecast sea ice melt (2500 kW)</option>
+	
+						<option value=-1>A device using...</option>
+					</select>
+				</div>
+				
+
+				<!--<span id="customDevice" style="display: none;">
+					<input id='customDevice-input' name="'customDevice-input" value=2500 type="number"
+						class="form-select">
+					<label> Watts</label>
+				</span>-->
+
+				<label>during </label>
+				<div class="col-12">
+					<div class="input-group">
+						<input id='duration' name="duration" value=1 type="number" class="form-control">
+						<div class="input-group-text">hours</div>
+					  </div>
+			</div>
+			
+				<label>in </label>
+				<div class="col-12">
+				<select id="country" class="form-select">
+					<option value=91>Austria</option>
+					<option value=167>Belgium</option>
+					<option value=421>Bulgaria</option>
+					<option value=145>Croatia</option>
+					<option value=651>Cyprus</option>
+					<option value=431>Czechia</option>
+					<option value=126>Denmark</option>
+					<option value=86>Finland</option>
+					<option value=52>France</option>
+					<option value=338>Germany</option>
+					<option value=598>Greece</option>
+					<option value=212>Hungary</option>
+					<option value=316>Ireland</option>
+					<option value=233>Italy</option>
+					<option value=117>Latvia</option>
+					<option value=22>Lithuania</option>
+					<option value=74>Luxembourg</option>
+					<option value=357>Malta</option>
+					<option value=390>Netherlands</option>
+					<option value=19>Norway</option>
+					<option value=719>Poland</option>
+					<option value=244>Portugal</option>
+					<option value=293>Romania</option>
+					<option value=231>Slovenia</option>
+					<option value=207>Spain</option>
+					<option value=8>Sweden</option>
+					<option value=228>United Kingdom</option>
+					<option value=417 selected>United States of America</option>
+				</select>
+				</div>
+			</form>
+		</div>
+		</div>
+		<div class="row">
+		<div class="col-md-6 col-sm-12 mt-4 mx-auto px-4 py-2 text-dark border rounded" id="result">
+		</div>
+		</div>
+	</div>
+	
+	</div>
+	<!--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+		integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous">
+	</script>-->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+		integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous">
+	</script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="script.js"></script>
-</head>
-<body style='background-color: rgb(170,68,0)'>
-
-	<br>
-	<label>You are using </label>
-	<select id="device">
-		<option value=60 selected>an incandescent light bulb (60 W)</option>
-		<option value=7 >a LED bulb (7 W - Equivalent to 60 W)</option>
-		<option value=500 >a washing machine (500 W)</option>
-		<option value=1000 >a dryer (1000 W)</option>
-		<option value=65 >an air cooler (65 W)</option>
-
-		<option value=2150 >an oven (2150 kW)</option>
-		<option value=600 >a microwave (600 W)</option>
-		<option value=100 >a fridge (100 W)</option>
-		<option value=1200 >a dishwasher (1200 kW)</option>
-
-		<option value=200 >a large LED TV (200 W)</option>
-		<option value=75 >a laptop (75 W)</option>
-		<option value=200 >a desktop computer (200 W)</option>
-		<option value=2500 >a cluster node with 8 GPUs to forecast sea ice melt (2500 kW)</option>
-
-		<option value=-1>A device using...</option>
-	</select> 
-
-	<span id="customDevice" style="display: none;">
-		<input id='customDevice-input' name="'customDevice-input" value=2500 type="number">
-		<label> Watts</label>
-	</span>
-
-
-	<br>
-	<label>during </label>
-	<input id='duration' name="duration" value=1 type="number">
-	<label> hours</label>
-
-
-	
-	<label>in </label>
-	<select id="country">
-		<option value=91>Austria</option>
-		<option value=167>Belgium</option>
-		<option value=421>Bulgaria</option>
-		<option value=145>Croatia</option>
-		<option value=651>Cyprus</option>
-		<option value=431>Czechia</option>
-		<option value=126>Denmark</option>
-		<option value=86>Finland</option>
-		<option value=52>France</option>
-		<option value=338>Germany</option>
-		<option value=598>Greece</option>
-		<option value=212>Hungary</option>
-		<option value=316>Ireland</option>
-		<option value=233>Italy</option>
-		<option value=117>Latvia</option>
-		<option value=22>Lithuania</option>
-		<option value=74>Luxembourg</option>
-		<option value=357>Malta</option>
-		<option value=390>Netherlands</option>
-		<option value=19>Norway</option>
-		<option value=719>Poland</option>
-		<option value=244>Portugal</option>
-		<option value=293>Romania</option>
-		<option value=231>Slovenia</option>
-		<option value=207>Spain</option>
-		<option value=8>Sweden</option>
-		<option value=228>United Kingdom</option>
-		<option value=417 selected>United States of America</option>
-	  </select>
-
-	  <p id="result"></p>
-
-
-	  <img id='pinguing' class="animate__animated" style='opacity:0%; max-height: calc( 100vh - 135px); bottom: 0; position: fixed;' src="sad-penguin.svg">
 </body>
+
 </html>
-
-
-

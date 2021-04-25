@@ -14,8 +14,12 @@ function runComputation(){
 	if (lostSurfaceInmm2>100000) {
 		surf=Math.round(lostSurfaceInmm2/1000000*100)/100+' m&#178';
 	}
-	$('#result').html('<b>Due to your usage, '+surf+' of sea ice disappeared in Artic!!!*</b><br>*Estimation based on the work of <a href="https://science.sciencemag.org/content/354/6313/747">Notz et al., 2016</a>; CO2e/kWh data from <a href="https://www.eia.gov/tools/faqs/faq.php?id=74&t=11"">EIA</a> and <a href="https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6#tab-googlechartid_googlechartid_googlechartid_googlechartid_chart_11111">EEA</a>.')
+	$('#result').html(`<p class="lead"><strong>Due to your usage, `+surf+` of sea ice disappeared in Artic!!!*</strong></p>
+	<p class="small mb-0">*Estimation based on the work of <a href="https://science.sciencemag.org/content/354/6313/747">Notz et al., 2016</a>; 
+	CO2e/kWh data from <a href="https://www.eia.gov/tools/faqs/faq.php?id=74&t=11"">EIA</a> and 
+	<a href="https://www.eea.europa.eu/data-and-maps/daviz/co2-emission-intensity-6#tab-googlechartid_googlechartid_googlechartid_googlechartid_chart_11111">EEA</a>.</p>`)
 	$('#pinguing').addClass('animate__fadeInUp');
+	jQuery('body').css({"background-image": "url('sad-penguin.svg')"});  
 }
 
 $(window).on('load', function(){
@@ -24,4 +28,5 @@ $(window).on('load', function(){
 	$('#device').on('change',function(){
 		$('#customDevice').toggle($('#device').val()==-1);
 	});
+	//runComputation()
 });

@@ -1,0 +1,19 @@
+html{
+    overflow: hidden;
+}
+body{
+    background-color: rgb(170,68,0);
+    background-repeat: no-repeat;
+    background-size: cover no-cover;
+    background-position: center;
+
+    opacity: 1.0;
+    -webkit-transition: background 3s linear;
+    -moz-transition: background 3s linear;
+    -o-transition: background 3s linear;
+    -ms-transition: background 3s linear;
+    transition: background 3s linear;
+}
+form, #result{
+    background-color: rgba(255,255,255,.9);
+}
