@@ -1,0 +1,102 @@
+# How much Arctic sea ice does your electricity melt?
+
+> A free calculator by Mathieu Gravey that converts the electricity used by a device (from a light bulb to an AI chatbot prompt or a GPU server) into CO₂ emissions and the corresponding loss of September Arctic sea ice, using the carbon intensity of the user's country's electricity grid.
+
+Page: https://www.mgravey.com/deviceMeltedIce/
+Source code: https://github.com/mgravey/deviceMeltedIce
+
+## Formula
+
+```
+energy_Wh   = power_W × duration_h × quantity          (devices with a power rating)
+energy_Wh   = energy_per_use_Wh × quantity             (per-use items such as AI prompts)
+energy_Wh  ×= 1.2                                      (only for data-centre equipment: PUE overhead)
+co2_g       = energy_Wh / 1000 × grid_intensity_gCO2_per_kWh
+sea_ice_m2  = co2_g / 1e6 × 3                          (3 m² of sea ice per tonne of CO₂)
+```
+
+Equivalent: 1 g of CO₂ ≈ 3 mm² of Arctic sea ice. At the world-average grid (458 gCO₂/kWh), 1 kWh ≈ 1.37 cm².
+
+## Constants and their sources
+
+- **3 m² of September Arctic sea ice lost per tonne of CO₂**: observed linear relationship between cumulative anthropogenic CO₂ emissions and September Arctic sea-ice area. Notz, D. & Stroeve, J. (2016), *Observed Arctic sea-ice loss directly follows anthropogenic CO2 emission*, Science 354(6313), 747–750. https://doi.org/10.1126/science.aag2345
+- **Grid carbon intensity (gCO₂/kWh)**: Ember yearly electricity data (CC-BY-4.0), most recent year available per country (2025 for most countries, 2024 or older for some). https://ember-energy.org/data/yearly-electricity-data/ The full table is in https://www.mgravey.com/deviceMeltedIce/data/intensity.js
+- **PUE 1.2**: power usage effectiveness of a modern large data centre. A data centre draws more electricity than its servers because of cooling and power conversion: a 10 kW server makes the facility draw about 12 kW. Applied only to AI prompts and GPU systems.
+- **Chatbot prompt, 0.3 Wh**: Epoch AI (2025) estimate for a typical ChatGPT (GPT-4o) query, https://epoch.ai/gradient-updates/how-much-energy-does-chatgpt-use. Consistent with Google's median of 0.24 Wh per Gemini text prompt (https://cloud.google.com/blog/products/infrastructure/measuring-the-environmental-impact-of-ai-inference) and OpenAI's stated average of 0.34 Wh per ChatGPT query (https://blog.samaltman.com/the-gentle-singularity). Reasoning models, image and video generation use considerably more.
+- **Long-document prompt, 2.5 Wh**: Epoch AI estimate for a query with ~10,000 input tokens.
+- **GPU systems**: maximum power from NVIDIA documentation (DGX H100 10.2 kW, DGX B200 14.3 kW); GB200 NVL72 rack ≈ 120 kW (third-party estimates). Real average use is usually lower.
+- **Household devices**: typical power ratings, not measurements.
+
+## Devices (id, power or energy per use)
+
+| id | device | value | data centre (×1.2) |
+|---|---|---|---|
+| led | LED light bulb | 8 W | no |
+| bulb | incandescent light bulb | 60 W | no |
+| fridge | fridge (average draw over a day) | 35 W | no |
+| kettle | electric kettle | 2000 W | no |
+| oven | oven | 2150 W | no |
+| microwave | microwave | 1000 W | no |
+| dishwasher | dishwasher | 1200 W | no |
+| washer | washing machine | 500 W | no |
+| dryer | tumble dryer | 2500 W | no |
+| heater | electric heater | 2000 W | no |
+| ac | air conditioner | 1000 W | no |
+| fan | fan | 50 W | no |
+| ev | electric car charging | 7400 W | no |
+| phone | smartphone charging | 10 W | no |
+| laptop | laptop | 50 W | no |
+| desktop | desktop computer | 200 W | no |
+| gaming | gaming PC | 450 W | no |
+| console | game console | 150 W | no |
+| tv | large LED TV | 100 W | no |
+| prompt | chatbot prompt | 0.3 Wh per prompt | yes |
+| longprompt | long-document prompt (~10k tokens) | 2.5 Wh per prompt | yes |
+| dgxh100 | NVIDIA DGX H100 (8 GPUs) | 10,200 W | yes |
+| dgxb200 | NVIDIA DGX B200 (8 GPUs) | 14,300 W | yes |
+| nvl72 | NVIDIA GB200 NVL72 rack (72 GPUs) | 120,000 W | yes |
+| custom | any device, power given in W | parameter `w` | no |
+
+## Selected grid intensities (gCO₂/kWh, Ember, 2025)
+
+World 458 · European Union 209 · United States 384 · China 526 · India 671 · Japan 477 · Germany 330 · United Kingdom 217 · Poland 591 · Austria 117 · France 41 · Switzerland 39 · Norway 28 · Canada 191 · Australia 525 · Brazil 110
+
+## Worked examples
+
+| scenario | grid | electricity | CO₂ | sea ice |
+|---|---|---|---|---|
+| 1 chatbot prompt | World (458) | 0.36 Wh | 0.165 g | ≈ 0.5 mm² (a grain of sand) |
+| 1 billion chatbot prompts | United States (384) | 360 MWh | 138 t | ≈ 415 m² (1.6 tennis courts) |
+| Large LED TV, 3 hours | Germany (330) | 0.3 kWh | 99 g | ≈ 3 cm² |
+| Fridge, 1 year | Austria (117) | 307 kWh | 36 kg | ≈ 0.11 m² |
+| EV charging, 8 hours | France (41) | 59 kWh | 2.4 kg | ≈ 73 cm² |
+| GB200 NVL72 rack, 1 year | United States (384) | 1.26 GWh | 484 t | ≈ 1,450 m² |
+
+## Link to a pre-filled calculation
+
+The page reads its inputs from URL parameters, so you can link directly to a scenario:
+
+- `d`: device id from the table above
+- `n`: quantity (number)
+- `s`: multiplier, one of `1`, `1000`, `1000000`, `1000000000`
+- `t`: duration (number; ignored for per-use items)
+- `u`: duration unit, one of `min`, `h`, `d`, `w`, `y`
+- `c`: country as ISO 3166-1 alpha-3 code (e.g. `USA`, `DEU`, `AUT`), or `WORLD` / `EU`
+- `w`: power in watts when `d=custom`
+
+Examples:
+
+- 1 billion chatbot prompts in the US: https://www.mgravey.com/deviceMeltedIce/?d=prompt&n=1&s=1000000000&c=USA
+- A large TV for 3 hours in Germany: https://www.mgravey.com/deviceMeltedIce/?d=tv&n=1&s=1&t=3&u=h&c=DEU
+- A 3 kW device for 2 days in Austria: https://www.mgravey.com/deviceMeltedIce/?d=custom&w=3000&n=1&s=1&t=2&u=d&c=AUT
+
+## Caveats
+
+- Results are orders of magnitude, not precise measurements.
+- The average carbon intensity of the country's grid is used; green electricity contracts, on-site solar and marginal emissions are not taken into account.
+- The 3 m²/t relation is an observed long-term average for September (summer minimum) Arctic sea ice. It is not an instantaneous, local effect of one device.
+- AI energy figures are estimates and vary widely with model, prompt length and hardware.
+
+## Citing
+
+Gravey, M. *How much Arctic sea ice does your electricity melt?* https://www.mgravey.com/deviceMeltedIce/ — based on Notz & Stroeve (2016) and Ember electricity data.
