@@ -13,12 +13,14 @@ const sig2 = new Intl.NumberFormat('en', { maximumSignificantDigits: 2 });
 
 /* ---------- formatting ---------- */
 
-function fmtArea(m2) {
-	if (m2 <= 0) return '0 mm²';
-	if (m2 < 1e-4) return sig3.format(m2 * 1e6) + ' mm²';
-	if (m2 < 0.01) return sig3.format(m2 * 1e4) + ' cm²';
-	if (m2 < 1e6) return sig3.format(m2) + ' m²';
-	return sig3.format(m2 / 1e6) + ' km²';
+// Always 3 significant digits, so the counter keeps a steady number of characters.
+const area3 = new Intl.NumberFormat('en', { minimumSignificantDigits: 3, maximumSignificantDigits: 3 });
+function areaParts(m2) {
+	if (m2 <= 0) return ['0', 'mm²'];
+	if (m2 < 1e-4) return [area3.format(m2 * 1e6), 'mm²'];
+	if (m2 < 0.01) return [area3.format(m2 * 1e4), 'cm²'];
+	if (m2 < 1e6) return [area3.format(m2), 'm²'];
+	return [area3.format(m2 / 1e6), 'km²'];
 }
 
 function fmtUnits(x, units) {
@@ -136,6 +138,7 @@ function compute() {
 	$('compare').textContent = compare(area);
 	target = area;
 	targetL = area > 0 ? Math.log10(area) : LOG_MIN - 1;
+	reserveCounterWidth();
 
 	const params = new URLSearchParams();
 	params.set('d', d.id);
@@ -266,9 +269,49 @@ function spawnRipple(scale) {
 	ripples.push({ el, age: 0 });
 }
 
+/* ---------- counter ---------- */
+
+// The counter is centred, so a changing width would make it jump left and right
+// while it counts. Before each animation we reserve the widest number and unit it
+// will show (number right-aligned, unit left-aligned), then ease to the final width.
+const areaNum = $('area').querySelector('.num'), areaUnit = $('area').querySelector('.unit');
+const measure = $('area').cloneNode(true);
+measure.removeAttribute('id');
+measure.classList.add('measure');
+measure.setAttribute('aria-hidden', 'true');
+$('area').after(measure);
+const [measureNum, measureUnit] = measure.children;
+
+function widthEm(el, text) {
+	el.textContent = text;
+	return el.getBoundingClientRect().width / parseFloat(getComputedStyle(el).fontSize);
+}
+
+function setCounterWidth(values) {
+	let num = 0, unit = 0;
+	for (const v of values) {
+		const [n, u] = areaParts(v);
+		num = Math.max(num, widthEm(measureNum, n));
+		unit = Math.max(unit, widthEm(measureUnit, u));
+	}
+	areaNum.style.minWidth = num.toFixed(3) + 'em';
+	areaUnit.style.minWidth = unit.toFixed(3) + 'em';
+}
+
+function shownArea(L) {
+	return L === targetL ? target : L < LOG_MIN - 0.99 ? 0 : 10 ** L;
+}
+
+function reserveCounterWidth() {
+	const values = [target];
+	for (let i = 0; i <= 60; i++) values.push(shownArea(curL + (targetL - curL) * i / 60));
+	setCounterWidth(values);
+	settled = false;
+}
+
 /* ---------- animation loop ---------- */
 
-let target = 0, targetL = LOG_MIN - 1, curL = LOG_MIN - 1, last = 0, shownText = '', shownHeat = '';
+let target = 0, targetL = LOG_MIN - 1, curL = LOG_MIN - 1, last = 0, shownText = '', shownHeat = '', settled = false;
 const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 
 function frame(now) {
@@ -282,8 +325,16 @@ function frame(now) {
 	else curL += Math.sign(diff) * Math.min(Math.abs(diff), Math.max(Math.abs(diff) * (1 - Math.exp(-0.9 * dt)), 0.35 * dt));
 	const f = Math.min(1, Math.max(0, (curL - LOG_MIN) / (LOG_MAX - LOG_MIN)));
 
-	const text = curL === targetL ? fmtArea(target) : fmtArea(curL < LOG_MIN - 0.99 ? 0 : 10 ** curL);
-	if (text !== shownText) $('area').textContent = shownText = text;
+	const [num, unit] = areaParts(shownArea(curL));
+	if (num + unit !== shownText) {
+		areaNum.textContent = num;
+		areaUnit.textContent = unit;
+		shownText = num + unit;
+	}
+	if (curL === targetL && !settled) {
+		setCounterWidth([target]);
+		settled = true;
+	}
 	const heat = f.toFixed(3);
 	if (heat !== shownHeat) document.documentElement.style.setProperty('--heat', shownHeat = heat);
 

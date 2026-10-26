@@ -164,11 +164,19 @@ select { max-width: 100%; }
 	line-height: 1.1;
 	letter-spacing: -.02em;
 	font-variant-numeric: tabular-nums;
-	background: linear-gradient(90deg, #ffffff, var(--accent));
+	white-space: nowrap;
+}
+.area > span { display: inline-block; transition: min-width .6s ease; }
+.area .num {
+	text-align: right;
+	background: linear-gradient(90deg, #ffffff, #c4ecff);
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
 }
+.area .unit { text-align: left; margin-left: .2em; color: var(--accent); }
+.area.measure { position: absolute; left: -9999px; top: 0; visibility: hidden; }
+.headline { position: relative; }
 .of { color: var(--muted); font-size: 1.05rem; }
 
 .compare { margin: .35rem 0 0; font-size: 1.05rem; min-height: 1.6em; }
